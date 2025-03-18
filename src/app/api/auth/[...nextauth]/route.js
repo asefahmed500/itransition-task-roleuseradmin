@@ -40,11 +40,12 @@ export const authOptions = {
             name: user.name,
             email: user.email,
             provider: 'google',
-            role: 'user',
+            role: 'user', // Default role for Google sign-in
           });
           await newUser.save();
-        } else if (existingUser.isBlocked) {
-          throw new Error('Your account has been blocked.');
+          user.role = 'user'; // Add role to the user object
+        } else {
+          user.role = existingUser.role; // Use existing role
         }
       }
       return true; // Allow sign-in
@@ -52,13 +53,13 @@ export const authOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        token.role = user.role;
+        token.role = user.role; // Include role in the token
       }
       return token;
     },
     async session({ session, token }) {
       session.user.id = token.id;
-      session.user.role = token.role;
+      session.user.role = token.role; // Include role in the session
       return session;
     },
   },
