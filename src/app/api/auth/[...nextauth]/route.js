@@ -22,12 +22,12 @@ export const authOptions = {
         const user = await User.findOne({ email: credentials.email });
         if (user && bcrypt.compareSync(credentials.password, user.password)) {
           if (user.isBlocked) {
-            throw new Error('Your account has been blocked.');
+            throw new Error('Your account has been blocked. Please contact support.');
           }
           return { id: user._id, name: user.name, email: user.email, role: user.role };
         }
         return null;
-      },
+      }
     }),
   ],
   callbacks: {
