@@ -2,13 +2,12 @@ import dbConnect from '@/lib/dbConnect';
 import User from '@/models/User';
 
 export async function PUT(request, { params }) {
-  const { id } =  await params;
+  const { id } = params;
   const { isBlocked } = await request.json();
 
   try {
     await dbConnect();
 
-    // Update the user's isBlocked status
     const user = await User.findByIdAndUpdate(id, { isBlocked }, { new: true });
 
     if (!user) {
@@ -31,15 +30,12 @@ export async function PUT(request, { params }) {
   }
 }
 
-
-
 export async function DELETE(request, { params }) {
-  const { id } = await params;
+  const { id } = params;
 
   try {
     await dbConnect();
 
-    // Delete the user
     const user = await User.findByIdAndDelete(id);
 
     if (!user) {
